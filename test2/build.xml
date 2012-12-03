@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. 
+	
+	
+	!!import
+	Remember need to change your ECLIPSE_HOME's value because
+	I think the position you install eclipse is different from mine.
+	
+-->
+	<project basedir="." default="build" name="test2">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="D:/program/java/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900/junit.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+    </path>
+    <path id="test2.classpath">
+        <pathelement location="bin"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>
+		
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+		
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+              	
+              	
+    <target depends="clean" name="cleanall"/>
+    
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="test2.classpath"/>
+        </javac>
+    </target>
+    
+	<!-- Junit -->
+	<target  name ="junit"  depends ="build">
+		<junit  printsummary ="yes" showoutput="yes" fork="off">
+			<classpath refid="JUnit 4.libraryclasspath"/>
+			<classpath>
+				<pathelement location="bin"/>
+			</classpath>
+			
+			<batchtest  fork ="yes" todir ="bin">
+				<formatter  type ="xml"/>
+				<fileset  dir="src">
+					<include  name ="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+		
+</project>
